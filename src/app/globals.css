@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+:root {
+  --orange: #E84D1A;
+  --orange-light: #FF6B35;
+  --orange-glow: rgba(232, 77, 26, 0.3);
+  --dark: #0A0A0A;
+  --dark-card: #111111;
+  --dark-border: #1A1A1A;
+  --dark-surface: #141414;
+  --white: #FAFAFA;
+  --grey: #888888;
+  --grey-light: #AAAAAA;
+  --grey-dark: #555555;
+  --green-light: #4CAF50;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--dark);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes bpiCount {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.flow-screen-enter { animation: slideIn 0.35s ease forwards; }
+.bpi-anim { animation: bpiCount 0.5s ease forwards; }
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  z-index: 9999;
+  padding: 16px;
+  background: var(--orange);
+  color: var(--white);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+}
+.skip-to-content:focus {
+  left: 16px;
+  top: 16px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .fade-up { opacity: 1; transform: none; }
+}
+
+/* ── Mobile global fixes ── */
+@media (max-width: 768px) {
+  /* Reduce section vertical padding */
+  section { padding-top: 64px !important; padding-bottom: 64px !important; }
+
+  /* Tighten grid row gaps when 2-col grids collapse */
+  .score-grid, .gameflow-grid, .launch-grid {
+    gap: 32px !important;
+  }
+
+  /* Prevent any fixed-width phone mockup from overflowing. The screens are
+     absolutely positioned, so an explicit aspect-ratio is required — without
+     it, height:auto collapses the frame to zero and the screen is cut off. */
+  .phone-frame {
+    width: min(260px, 88vw) !important;
+    height: auto !important;
+    aspect-ratio: 7 / 15;
+    min-height: 0 !important;
+  }
+
+  /* Plans comparison table: shrink fixed cols */
+  .comp-table-row {
+    grid-template-columns: 1fr 70px 80px !important;
+    gap: 8px !important;
+    padding: 12px 12px !important;
+    font-size: 13px !important;
+  }
+
+  /* Plans FAQ CTA card */
+  .plans-cta-card {
+    padding: 32px 24px !important;
+  }
+}
