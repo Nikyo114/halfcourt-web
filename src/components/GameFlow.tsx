@@ -7,11 +7,11 @@ import Image from "next/image";
 // full screen; the well-proportioned ones keep "cover" so they fill the frame.
 const steps = [
   { n: 1, label: "Build Your Team", desc: "Queue solo or invite friends. Set your skill window and availability.", img: "/screens/game-builder-1.png", fit: "cover" as const },
-  { n: 2, label: "Where", desc: "Pick your court. Every one has a live pulse: activity, availability, vibe.", img: "/screens/game-builder-2.png", fit: "contain" as const },
+  { n: 2, label: "Where", desc: "Pick your court. Every one has a live pulse: activity, availability, vibe.", img: "/screens/game-builder-2.png", fit: "cover" as const },
   { n: 3, label: "When", desc: "Tonight? This weekend? Set your window and we'll find the game.", img: "/screens/game-builder-3.png", fit: "cover" as const },
   { n: 4, label: "Who", desc: "1v1, 2v2, or 3v3. Shadow or Ranked. You set the terms.", img: "/screens/game-builder-4.png", fit: "contain" as const },
   { n: 5, label: "Looking…", desc: "Algorithm locks in opponents at your level. Court confirmed automatically.", img: "/screens/game-builder-5.png", fit: "cover" as const },
-  { n: 6, label: "Found!", desc: "Match confirmed. Grab your gear, tip-off is on.", img: "/screens/game-builder-6.png", fit: "contain" as const },
+  { n: 6, label: "Found!", desc: "Match confirmed. Grab your gear, tip-off is on.", img: "/screens/game-builder-6.png", fit: "cover" as const },
 ];
 
 export default function GameFlow() {
