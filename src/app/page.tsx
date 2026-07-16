@@ -51,6 +51,7 @@ function PhoneMockup({ src, alt, width = 220, height = 470 }: { src: string; alt
 /* ─── Hero ─── */
 // Left column: static value-prop questions (permanent white, no rotation).
 const heroQuestions = [
+  "Having trouble finding games?",
   "Can't find courts to book?",
   "Want to play for something?",
   "Like tracking progress?",
@@ -235,7 +236,7 @@ function StatsBar() {
   return (
     <div style={{ borderTop: "1px solid var(--dark-border)", borderBottom: "1px solid var(--dark-border)", padding: "40px 0", background: "var(--dark-surface)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 32, textAlign: "center" }} className="stats-grid">
-        {[["30s","From open app to queue"],["$0","To get started. Free forever."],["$1000+","Opening tournament prize pool"],["Coming Soon","Melbourne. Then global."]].map(([v,l]) => (
+        {[["30s","From open app to queue"],["$0","To get started. Free forever."],["$10,000","Worth of prizes at the opening tournament"],["Coming Soon","Melbourne. Then global."]].map(([v,l]) => (
           <div key={l}>
             <div style={{ fontFamily: "var(--font-outfit)", fontSize: 36, fontWeight: 800, color: "var(--orange)" }}>{v}</div>
             <div style={{ fontSize: 14, color: "var(--grey)", marginTop: 4 }}>{l}</div>
@@ -431,14 +432,14 @@ function Launch() {
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 2 }}>
         <FadeUp><div style={{ fontFamily: "var(--font-outfit)", fontSize: 13, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: "var(--orange)", marginBottom: 16 }}>Q4 2026 Pilot</div></FadeUp>
         <FadeUp delay={100}><h2 style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(32px,5vw,52px)", fontWeight: 800, lineHeight: 1.1, marginBottom: 16 }}>It starts in Bendigo.<br />It doesn&apos;t stop there.</h2></FadeUp>
-        <FadeUp delay={150}><p style={{ fontSize: 18, color: "var(--grey-light)", lineHeight: 1.6, marginBottom: 48, maxWidth: 600 }}>Bendigo – Red Energy Arena. A Q4 2026 pilot. Australia&apos;s first ranked pickup basketball tournament. Two divisions, real prize money, and a leaderboard that follows you for life.</p></FadeUp>
+        <FadeUp delay={150}><p style={{ fontSize: 18, color: "var(--grey-light)", lineHeight: 1.6, marginBottom: 48, maxWidth: 600 }}>Bendigo – Red Energy Arena. A Q4 2026 pilot. Australia&apos;s first ranked pickup basketball tournament. Open and U18, men&apos;s and women&apos;s, real prizes, and a leaderboard that follows you for life.</p></FadeUp>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }} className="launch-grid">
           <FadeUp>
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               {[
                 ["📍", "Bendigo – Red Energy Arena", "Central Goldfields' premier basketball venue."],
-                ["🏀", "Two Divisions", "Above and below 500 BPI. Every skill level, fair competition."],
-                ["🎟️", "Free Entry for Subscribers", "Or earn free entry by referring 3 friends."],
+                ["🏀", "Open & U18 · Men's & Women's", "3v3 and 2v2 formats."],
+                ["🎟️", "Entry", "Via winning a weekend tournament, qualifiers, or direct access."],
                 ["📅", "Monthly Tournaments", "Major tournament every 1st Saturday of the month."],
               ].map(([icon, h, p]) => (
                 <div key={h as string} style={{ display: "flex", gap: 16 }}>
@@ -449,13 +450,14 @@ function Launch() {
                   </div>
                 </div>
               ))}
+              <div style={{ fontSize: 14, color: "var(--grey)", fontStyle: "italic" }}>More details to be released shortly.</div>
             </div>
           </FadeUp>
           <FadeUp delay={200}>
             <div style={{ display: "flex", gap: 32, alignItems: "center" }} className="launch-card-wrap">
               <div style={{ flex: 1, background: "linear-gradient(135deg,rgba(232,77,26,0.12),rgba(232,77,26,0.02))", border: "1px solid rgba(232,77,26,0.25)", borderRadius: 24, padding: "40px 32px", textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-outfit)", fontSize: 64, fontWeight: 900, color: "var(--orange)", lineHeight: 1 }}>$1000</div>
-                <div style={{ fontSize: 16, color: "var(--grey-light)", marginBottom: 24, marginTop: 4 }}>Opening Tournament Prize Pool</div>
+                <div style={{ fontFamily: "var(--font-outfit)", fontSize: 64, fontWeight: 900, color: "var(--orange)", lineHeight: 1 }}>$10,000</div>
+                <div style={{ fontSize: 16, color: "var(--grey-light)", marginBottom: 24, marginTop: 4 }}>Worth of Prizes · Opening Tournament</div>
                 <div style={{ fontFamily: "var(--font-outfit)", fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Bendigo – Red Energy Arena</div>
                 <div style={{ fontSize: 14, color: "var(--grey)", marginBottom: 24 }}>Bendigo, Victoria · Q4 2026 Pilot</div>
                 <Link href="/#waitlist" style={{ background: "var(--orange)", color: "var(--white)", padding: "14px 28px", borderRadius: 12, fontSize: 15, fontWeight: 700, textDecoration: "none", display: "inline-block", fontFamily: "var(--font-dm-sans)" }}>
@@ -718,7 +720,11 @@ function Contact() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }} className="contact-grid">
           <FadeUp>
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-              {[["📧","Email","team@playhalfcourt.com"],["📍","Location","Melbourne, Victoria, Australia"],["📱","Social","@playhalfcourt on Instagram & TikTok"],["🏟️","Venue Partnerships","Want to list your court? Get in touch."]].map(([icon,h,p]) => (
+              {[
+                ["📧","Email",<a key="email" href="mailto:Support@playhalfcourt.com" style={{ color: "var(--grey-light)", textDecoration: "underline", textUnderlineOffset: 3 }}>Support@playhalfcourt.com</a>],
+                ["📱","Social",<span key="social"><a href="https://www.instagram.com/playhalfcourt/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--grey-light)", textDecoration: "underline", textUnderlineOffset: 3 }}>Instagram</a> · <a href="https://www.tiktok.com/@playhalfcourt" target="_blank" rel="noopener noreferrer" style={{ color: "var(--grey-light)", textDecoration: "underline", textUnderlineOffset: 3 }}>TikTok</a></span>],
+                ["🏟️","Venue Partnerships","Want to list your court? Get in touch."],
+              ].map(([icon,h,p]) => (
                 <div key={h as string} style={{ display: "flex", gap: 16 }}>
                   <div style={{ width: 48, height: 48, minWidth: 48, background: "rgba(232,77,26,0.1)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>{icon}</div>
                   <div>

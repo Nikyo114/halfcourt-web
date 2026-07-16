@@ -41,7 +41,11 @@ export default function Footer() {
         </div>
         <div style={{ borderTop: "1px solid var(--dark-border)", paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
           <p style={{ fontSize: 13, color: "var(--grey-dark)" }}>© 2026 Halfcourt Global Pty Ltd. All rights reserved.</p>
-          <p style={{ fontSize: 13, color: "var(--grey-dark)" }}>Melbourne, Victoria, Australia</p>
+          <div style={{ display: "flex", gap: 20, flexWrap: "wrap", alignItems: "center" }}>
+            <a href="mailto:Support@playhalfcourt.com" className="footer-link" style={{ fontSize: 13, color: "var(--grey-dark)", textDecoration: "none" }}>Support@playhalfcourt.com</a>
+            <a href="https://www.instagram.com/playhalfcourt/" target="_blank" rel="noopener noreferrer" className="footer-link" style={{ fontSize: 13, color: "var(--grey-dark)", textDecoration: "none" }}>Instagram</a>
+            <a href="https://www.tiktok.com/@playhalfcourt" target="_blank" rel="noopener noreferrer" className="footer-link" style={{ fontSize: 13, color: "var(--grey-dark)", textDecoration: "none" }}>TikTok</a>
+          </div>
         </div>
       </div>
       <style>{`

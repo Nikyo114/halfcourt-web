@@ -64,7 +64,7 @@ const organizationSchema = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
-    email: "team@playhalfcourt.com",
+    email: "Support@playhalfcourt.com",
     contactType: "customer support",
   },
 };
