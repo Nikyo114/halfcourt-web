@@ -33,6 +33,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: "https://playhalfcourt.com/tournaments",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
       url: "https://playhalfcourt.com/privacy",
       lastModified: new Date(),
       changeFrequency: "yearly",
