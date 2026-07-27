@@ -43,14 +43,6 @@ const courts: { name: string; address: string; distance: string; type: string; t
   },
 ];
 
-// Scaffold data: the live schedule syncs with the app at launch.
-const scheduledRuns = [
-  { format: "3v3", mode: "Ranked", time: "Sat · 12:00 PM", venue: "Red Energy Arena", slots: "4 slots left" },
-  { format: "4v4", mode: "Shadow", time: "Sat · 2:00 PM", venue: "Tom Flood Sports Centre", slots: "2 slots left" },
-  { format: "1v1", mode: "Ranked", time: "Sun · 10:00 AM", venue: "Rosalind Park Courts", slots: "Open queue" },
-  { format: "3v3", mode: "Shadow", time: "Sun · 4:00 PM", venue: "Kangaroo Flat YMCA", slots: "6 slots left" },
-];
-
 export default function DiscoverPage() {
   const [tab, setTab] = useState<"games" | "booking">("games");
   const [courtType, setCourtType] = useState("All courts");
@@ -131,38 +123,11 @@ export default function DiscoverPage() {
                   <span style={{ color: "var(--orange)", fontWeight: 700, fontSize: 14, fontFamily: "var(--font-dm-sans)" }}>Learn more →</span>
                 </div>
               </Link>
-              {/* Pinned community run */}
-              <div style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 16, padding: 24 }}>
-                <div style={{ fontSize: 28, marginBottom: 10 }}>🏀</div>
-                <h3 style={{ fontFamily: "var(--font-outfit)", fontSize: 20, fontWeight: 800, marginBottom: 6 }}>Saturday Open Run</h3>
-                <p style={{ fontSize: 14, color: "var(--grey-light)", lineHeight: 1.6, marginBottom: 12 }}>Weekly community run. All levels welcome — matchmaking balances the teams.</p>
-                <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 100, background: "rgba(46,125,50,0.1)", color: "var(--green-light)" }}>Weekly · Free</span>
-              </div>
             </div>
 
-            {/* Schedule */}
+            {/* Schedule: fills from the app at launch */}
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: "var(--orange)", marginBottom: 16, fontFamily: "var(--font-outfit)" }}>This Week</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32 }}>
-              {scheduledRuns.map((run) => (
-                <div key={`${run.format}-${run.time}`} className="run-row" style={{ display: "grid", gridTemplateColumns: "72px 1fr auto auto", gap: 16, alignItems: "center", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 14, padding: "16px 20px", transition: "all 0.3s" }}
-                  onMouseEnter={(e) => { const el = e.currentTarget; el.style.borderColor = "rgba(232,77,26,0.3)"; el.style.transform = "translateY(-2px)"; }}
-                  onMouseLeave={(e) => { const el = e.currentTarget; el.style.borderColor = "var(--dark-border)"; el.style.transform = "translateY(0)"; }}>
-                  <div style={{ fontFamily: "var(--font-outfit)", fontSize: 20, fontWeight: 900, color: "var(--orange)" }}>{run.format}</div>
-                  <div>
-                    <div style={{ fontSize: 15, fontWeight: 600 }}>{run.venue}</div>
-                    <div style={{ fontSize: 13, color: "var(--grey)" }}>{run.time}</div>
-                  </div>
-                  <span style={{
-                    fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 100,
-                    background: run.mode === "Ranked" ? "rgba(232,77,26,0.1)" : "rgba(46,125,50,0.1)",
-                    color: run.mode === "Ranked" ? "var(--orange)" : "var(--green-light)",
-                  }}>{run.mode}</span>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--grey-light)", whiteSpace: "nowrap" }}>{run.slots}</span>
-                </div>
-              ))}
-            </div>
-
-            <p style={{ fontSize: 13, color: "var(--grey)", textAlign: "center" }}>Live schedule syncs with the app at launch. <Link href="/#waitlist" style={{ color: "var(--orange)", textDecoration: "none", fontWeight: 700 }}>Join the waitlist →</Link></p>
+            <p style={{ fontSize: 13, color: "var(--grey)" }}>Live schedule syncs with the app at launch. <Link href="/#waitlist" style={{ color: "var(--orange)", textDecoration: "none", fontWeight: 700 }}>Join the waitlist →</Link></p>
           </div>
         )}
 
@@ -283,8 +248,6 @@ export default function DiscoverPage() {
         }
         @media (max-width: 768px) {
           .pinned-grid { grid-template-columns: 1fr !important; }
-          .run-row { grid-template-columns: 56px 1fr !important; }
-          .run-row > span { justify-self: start; }
         }
       `}</style>
     </>
