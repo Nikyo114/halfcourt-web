@@ -16,11 +16,9 @@ const steps = [
 
 export default function GameFlow() {
   const [active, setActive] = useState(0);
-  const [animKey, setAnimKey] = useState(0);
 
   const goTo = useCallback((i: number) => {
     setActive(i);
-    setAnimKey((k) => k + 1);
   }, []);
 
   useEffect(() => {
@@ -100,16 +98,20 @@ export default function GameFlow() {
               <span style={{ fontSize: 9, fontWeight: 600, color: "var(--white)" }}>9:41</span>
               <span style={{ fontSize: 9, color: "var(--white)" }}>▲▲▲</span>
             </div>
-            {/* Screen image */}
-            <div key={animKey} className="flow-screen-enter" style={{ position: "absolute", inset: 0, top: 36 }}>
-              <Image
-                src={steps[active].img}
-                alt={`Halfcourt app: ${steps[active].label}`}
-                fill
-                style={{ objectFit: steps[active].fit, objectPosition: "top" }}
-                priority
-              />
-            </div>
+            {/* Screen images: all steps stay mounted and fetch up front; the
+                active one fades in, so no image ever loads mid-rotation. */}
+            {steps.map((s, i) => (
+              <div key={s.n} aria-hidden={active !== i} style={{ position: "absolute", inset: 0, top: 36, opacity: active === i ? 1 : 0, transition: "opacity 0.45s ease" }}>
+                <Image
+                  src={s.img}
+                  alt={`Halfcourt app: ${s.label}`}
+                  fill
+                  sizes="280px"
+                  style={{ objectFit: s.fit, objectPosition: "top" }}
+                  loading="eager"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
