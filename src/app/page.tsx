@@ -679,7 +679,7 @@ function Waitlist() {
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
         <FadeUp><div style={{ fontFamily: "var(--font-outfit)", fontSize: 13, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: "var(--orange)", marginBottom: 16 }}>Join the Movement</div></FadeUp>
         <FadeUp delay={100}><h2 style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(36px,5vw,60px)", fontWeight: 900, lineHeight: 1.1, marginBottom: 16 }}>The court is yours.<br />If you want it.</h2></FadeUp>
-        <FadeUp delay={150}><p style={{ fontSize: 18, color: "var(--grey-light)", marginBottom: 40, maxWidth: 500, margin: "0 auto 40px" }}>Get early access to Halfcourt and be first on the court when we launch in Bendigo. Refer 3 friends and your tournament entry is on us.</p></FadeUp>
+        <FadeUp delay={150}><p style={{ fontSize: 18, color: "var(--grey-light)", marginBottom: 40, maxWidth: 560, margin: "0 auto 40px" }}>Get early access to Halfcourt and be first on the court when we launch in Bendigo. Join the waitlist and get an email sent with a download code once we are live. Refer 3 friends, and your tournament entry is on us.</p></FadeUp>
         <FadeUp delay={200}>
           {!submitted ? (
             <>
