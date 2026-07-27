@@ -43,7 +43,16 @@ const courts: { name: string; address: string; distance: string; type: string; t
   },
 ];
 
+// Scaffold data: the live schedule syncs with the app at launch.
+const scheduledRuns = [
+  { format: "3v3", mode: "Ranked", time: "Sat · 12:00 PM", venue: "Red Energy Arena", slots: "4 slots left" },
+  { format: "4v4", mode: "Shadow", time: "Sat · 2:00 PM", venue: "Tom Flood Sports Centre", slots: "2 slots left" },
+  { format: "1v1", mode: "Ranked", time: "Sun · 10:00 AM", venue: "Rosalind Park Courts", slots: "Open queue" },
+  { format: "3v3", mode: "Shadow", time: "Sun · 4:00 PM", venue: "Kangaroo Flat YMCA", slots: "6 slots left" },
+];
+
 export default function DiscoverPage() {
+  const [tab, setTab] = useState<"games" | "booking">("games");
   const [courtType, setCourtType] = useState("All courts");
   const [sortBy, setSortBy] = useState("Sort by: Distance");
 
@@ -63,125 +72,219 @@ export default function DiscoverPage() {
         <div style={{ background: "var(--dark-surface)", borderBottom: "1px solid var(--dark-border)", padding: "48px 0 32px" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: "var(--orange)", marginBottom: 12, fontFamily: "var(--font-outfit)" }}>Discover</div>
-            <h1 style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(32px,5vw,56px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 8 }}>Find a court.<br />Book a slot.</h1>
-            <p style={{ fontSize: 16, color: "var(--grey-light)", marginBottom: 32, maxWidth: 600 }}>Browse available courts near you, check open time slots, and lock in your next game.</p>
+            <h1 style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(32px,5vw,56px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 8 }}>
+              {tab === "games" ? <>Find a game.<br />Join the run.</> : <>Find a court.<br />Book a slot.</>}
+            </h1>
+            <p style={{ fontSize: 16, color: "var(--grey-light)", marginBottom: 32, maxWidth: 600 }}>
+              {tab === "games"
+                ? "Scheduled runs, pinned games, and events happening on Halfcourt near you."
+                : "Browse available courts near you, check open time slots, and lock in your next game."}
+            </p>
 
-            {/* Filters */}
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <input type="text" defaultValue="Bendigo, VIC" style={{ padding: "12px 16px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 14, fontFamily: "var(--font-dm-sans)", outline: "none", minWidth: 160 }}
-                onFocus={(e) => (e.target.style.borderColor = "var(--orange)")}
-                onBlur={(e) => (e.target.style.borderColor = "var(--dark-border)")} />
-              <input type="date" style={{ padding: "12px 16px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 14, fontFamily: "var(--font-dm-sans)", outline: "none", colorScheme: "dark" }}
-                onFocus={(e) => (e.target.style.borderColor = "var(--orange)")}
-                onBlur={(e) => (e.target.style.borderColor = "var(--dark-border)")} />
-              <select value={courtType} onChange={(e) => setCourtType(e.target.value)} style={{ padding: "12px 16px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 14, fontFamily: "var(--font-dm-sans)", outline: "none", cursor: "pointer" }}>
-                {["All courts", "Indoor", "Outdoor", "Private", "Public"].map(o => <option key={o}>{o}</option>)}
-              </select>
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={{ padding: "12px 16px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 14, fontFamily: "var(--font-dm-sans)", outline: "none", cursor: "pointer" }}>
-                {["Sort by: Distance", "Sort by: Price", "Sort by: Availability", "Sort by: Rating"].map(o => <option key={o}>{o}</option>)}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Layout: map + court list */}
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 80px", display: "grid", gridTemplateColumns: "1fr 380px", gap: 24 }} className="discover-layout">
-
-          {/* Map placeholder */}
-          <div style={{ background: "var(--dark-surface)", border: "1px solid var(--dark-border)", borderRadius: 16, minHeight: 520, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(232,77,26,0.03), rgba(232,77,26,0.01))" }} />
-
-            {/* Fake map grid */}
-            <div style={{ position: "absolute", inset: 0, opacity: 0.04 }}>
-              {Array.from({ length: 10 }).map((_, i) => (
-                <div key={i} style={{ position: "absolute", top: 0, bottom: 0, left: `${i * 10}%`, width: 1, background: "var(--white)" }} />
-              ))}
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} style={{ position: "absolute", left: 0, right: 0, top: `${i * 12.5}%`, height: 1, background: "var(--white)" }} />
+            {/* Tabs */}
+            <div style={{ display: "flex", gap: 4, background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 12, padding: 4, width: "fit-content", marginBottom: 8 }}>
+              {([["games", "Games"], ["booking", "Booking"]] as const).map(([key, label]) => (
+                <button key={key} onClick={() => setTab(key)} style={{
+                  padding: "10px 28px", borderRadius: 10, fontSize: 14, fontWeight: 600, border: "none", cursor: "pointer",
+                  fontFamily: "var(--font-dm-sans)", transition: "all 0.2s",
+                  background: tab === key ? "var(--orange)" : "transparent",
+                  color: tab === key ? "var(--white)" : "var(--grey)",
+                }}>{label}</button>
               ))}
             </div>
 
-            {/* Fake pins */}
-            {[{ top: "35%", left: "45%", label: "REA" }, { top: "52%", left: "38%", label: "TFS" }, { top: "28%", left: "60%", label: "RPK" }, { top: "65%", left: "30%", label: "KFY" }].map((pin) => (
-              <div key={pin.label} style={{ position: "absolute", top: pin.top, left: pin.left, transform: "translate(-50%,-100%)", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <div style={{ background: "var(--orange)", color: "var(--white)", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 6, whiteSpace: "nowrap", boxShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>{pin.label}</div>
-                <div style={{ width: 2, height: 8, background: "var(--orange)" }} />
-                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--orange)" }} />
+            {/* Filters (booking only) */}
+            {tab === "booking" && (
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 24 }}>
+                <input type="text" defaultValue="Bendigo, VIC" style={{ padding: "12px 16px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 14, fontFamily: "var(--font-dm-sans)", outline: "none", minWidth: 160 }}
+                  onFocus={(e) => (e.target.style.borderColor = "var(--orange)")}
+                  onBlur={(e) => (e.target.style.borderColor = "var(--dark-border)")} />
+                <input type="date" style={{ padding: "12px 16px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 14, fontFamily: "var(--font-dm-sans)", outline: "none", colorScheme: "dark" }}
+                  onFocus={(e) => (e.target.style.borderColor = "var(--orange)")}
+                  onBlur={(e) => (e.target.style.borderColor = "var(--dark-border)")} />
+                <select value={courtType} onChange={(e) => setCourtType(e.target.value)} style={{ padding: "12px 16px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 14, fontFamily: "var(--font-dm-sans)", outline: "none", cursor: "pointer" }}>
+                  {["All courts", "Indoor", "Outdoor", "Private", "Public"].map(o => <option key={o}>{o}</option>)}
+                </select>
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={{ padding: "12px 16px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 14, fontFamily: "var(--font-dm-sans)", outline: "none", cursor: "pointer" }}>
+                  {["Sort by: Distance", "Sort by: Price", "Sort by: Availability", "Sort by: Rating"].map(o => <option key={o}>{o}</option>)}
+                </select>
               </div>
-            ))}
-
-            <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>🗺️</div>
-              <h3 style={{ fontFamily: "var(--font-outfit)", fontSize: 20, fontWeight: 700, marginBottom: 8 }}>Interactive Map</h3>
-              <p style={{ color: "var(--grey)", fontSize: 14, maxWidth: 240 }}>Full map integration launches with the app. Courts will show real-time availability.</p>
-            </div>
-          </div>
-
-          {/* Court list */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {filtered.length === 0 && (
-              <div style={{ textAlign: "center", padding: 40, color: "var(--grey)" }}>No courts match this filter.</div>
             )}
-            {filtered.map((court) => (
-              <div key={court.name} style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 14, padding: 20, transition: "all 0.3s", cursor: "default" }}
-                onMouseEnter={(e) => { const el = e.currentTarget; el.style.borderColor = "rgba(232,77,26,0.3)"; el.style.transform = "translateY(-2px)"; }}
-                onMouseLeave={(e) => { const el = e.currentTarget; el.style.borderColor = "var(--dark-border)"; el.style.transform = "translateY(0)"; }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-                  <h4 style={{ fontFamily: "var(--font-outfit)", fontSize: 16, fontWeight: 700 }}>{court.name}</h4>
-                  <span style={{ fontSize: 12, color: "var(--orange)", fontWeight: 600, whiteSpace: "nowrap", marginLeft: 8 }}>{court.distance}</span>
-                </div>
-                <p style={{ fontSize: 13, color: "var(--grey)", marginBottom: 10 }}>{court.address}</p>
-                <span style={{
-                  display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 100, letterSpacing: 0.5, marginBottom: 12,
-                  background: court.type === "private" ? "rgba(232,77,26,0.1)" : "rgba(46,125,50,0.1)",
-                  color: court.type === "private" ? "var(--orange)" : "var(--green-light)",
-                }}>
-                  {court.typeLabel}
-                </span>
-
-                {court.special ? (
-                  <div style={{ display: "flex", gap: 8 }}>
-                    <span style={{ padding: "6px 12px", background: "var(--dark-surface)", border: "1px solid var(--dark-border)", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "var(--grey-light)" }}>Open</span>
-                    <span style={{ padding: "6px 12px", background: "rgba(232,77,26,0.1)", border: "1px solid var(--orange)", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "var(--orange)" }}>{court.special}</span>
-                  </div>
-                ) : (
-                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                    {court.slots.map((slot) => {
-                      const isBooked = court.booked.includes(slot);
-                      return (
-                        <span key={slot} style={{
-                          padding: "5px 10px", borderRadius: 8, fontSize: 12, fontWeight: 600,
-                          background: isBooked ? "transparent" : "var(--dark-surface)",
-                          border: `1px solid ${isBooked ? "var(--dark-border)" : "var(--dark-border)"}`,
-                          color: isBooked ? "var(--grey-dark)" : "var(--grey-light)",
-                          textDecoration: isBooked ? "line-through" : "none",
-                          opacity: isBooked ? 0.4 : 1,
-                          cursor: isBooked ? "not-allowed" : "pointer",
-                          transition: "all 0.15s",
-                        }}
-                          onMouseEnter={(e) => { if (!isBooked) { const el = e.currentTarget; el.style.borderColor = "var(--orange)"; el.style.color = "var(--orange)"; } }}
-                          onMouseLeave={(e) => { if (!isBooked) { const el = e.currentTarget; el.style.borderColor = "var(--dark-border)"; el.style.color = "var(--grey-light)"; } }}>
-                          {slot}
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            ))}
-
-            <div style={{ background: "var(--dark-surface)", border: "1px solid var(--dark-border)", borderRadius: 14, padding: 20, textAlign: "center" }}>
-              <div style={{ fontSize: 24, marginBottom: 8 }}>🏟️</div>
-              <p style={{ fontSize: 13, color: "var(--grey)", marginBottom: 12 }}>Own a court? List it on Halfcourt and reach hundreds of local players.</p>
-              <Link href="/#contact" style={{ color: "var(--orange)", fontWeight: 700, fontSize: 13, textDecoration: "none", fontFamily: "var(--font-dm-sans)" }}>Become a venue partner →</Link>
-            </div>
           </div>
         </div>
+
+        {/* ─── Games tab: scheduled runs, pinned games, events (scaffold) ─── */}
+        {tab === "games" && (
+          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 80px" }}>
+
+            {/* Pinned */}
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: "var(--orange)", marginBottom: 16, fontFamily: "var(--font-outfit)" }}>📌 Pinned</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 48 }} className="pinned-grid">
+              {/* Tournament card */}
+              <Link href="/tournaments" style={{ textDecoration: "none", color: "inherit" }}>
+                <div style={{ background: "linear-gradient(135deg,rgba(232,77,26,0.12),rgba(232,77,26,0.02))", border: "1px solid rgba(232,77,26,0.35)", borderRadius: 16, padding: 24, height: "100%", transition: "all 0.3s", cursor: "pointer" }}
+                  onMouseEnter={(e) => { const el = e.currentTarget; el.style.borderColor = "var(--orange)"; el.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={(e) => { const el = e.currentTarget; el.style.borderColor = "rgba(232,77,26,0.35)"; el.style.transform = "translateY(0)"; }}>
+                  <div style={{ fontSize: 28, marginBottom: 10 }}>🏆</div>
+                  <h3 style={{ fontFamily: "var(--font-outfit)", fontSize: 20, fontWeight: 800, marginBottom: 6 }}>Major Tournament</h3>
+                  <p style={{ fontSize: 14, color: "var(--grey-light)", lineHeight: 1.6, marginBottom: 12 }}>Details announced soon. Real venue, real prizes, seeded by BPI.</p>
+                  <span style={{ color: "var(--orange)", fontWeight: 700, fontSize: 14, fontFamily: "var(--font-dm-sans)" }}>Learn more →</span>
+                </div>
+              </Link>
+              {/* Pinned community run */}
+              <div style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 16, padding: 24 }}>
+                <div style={{ fontSize: 28, marginBottom: 10 }}>🏀</div>
+                <h3 style={{ fontFamily: "var(--font-outfit)", fontSize: 20, fontWeight: 800, marginBottom: 6 }}>Saturday Open Run</h3>
+                <p style={{ fontSize: 14, color: "var(--grey-light)", lineHeight: 1.6, marginBottom: 12 }}>Weekly community run. All levels welcome — matchmaking balances the teams.</p>
+                <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 100, background: "rgba(46,125,50,0.1)", color: "var(--green-light)" }}>Weekly · Free</span>
+              </div>
+            </div>
+
+            {/* Schedule */}
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: "var(--orange)", marginBottom: 16, fontFamily: "var(--font-outfit)" }}>This Week</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32 }}>
+              {scheduledRuns.map((run) => (
+                <div key={`${run.format}-${run.time}`} className="run-row" style={{ display: "grid", gridTemplateColumns: "72px 1fr auto auto", gap: 16, alignItems: "center", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 14, padding: "16px 20px", transition: "all 0.3s" }}
+                  onMouseEnter={(e) => { const el = e.currentTarget; el.style.borderColor = "rgba(232,77,26,0.3)"; el.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={(e) => { const el = e.currentTarget; el.style.borderColor = "var(--dark-border)"; el.style.transform = "translateY(0)"; }}>
+                  <div style={{ fontFamily: "var(--font-outfit)", fontSize: 20, fontWeight: 900, color: "var(--orange)" }}>{run.format}</div>
+                  <div>
+                    <div style={{ fontSize: 15, fontWeight: 600 }}>{run.venue}</div>
+                    <div style={{ fontSize: 13, color: "var(--grey)" }}>{run.time}</div>
+                  </div>
+                  <span style={{
+                    fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 100,
+                    background: run.mode === "Ranked" ? "rgba(232,77,26,0.1)" : "rgba(46,125,50,0.1)",
+                    color: run.mode === "Ranked" ? "var(--orange)" : "var(--green-light)",
+                  }}>{run.mode}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--grey-light)", whiteSpace: "nowrap" }}>{run.slots}</span>
+                </div>
+              ))}
+            </div>
+
+            <p style={{ fontSize: 13, color: "var(--grey)", textAlign: "center" }}>Live schedule syncs with the app at launch. <Link href="/#waitlist" style={{ color: "var(--orange)", textDecoration: "none", fontWeight: 700 }}>Join the waitlist →</Link></p>
+          </div>
+        )}
+
+        {/* ─── Booking tab: existing content preserved, coming soon ─── */}
+        {tab === "booking" && (
+          <div style={{ position: "relative" }}>
+            {/* Coming soon banner */}
+            <div style={{ position: "absolute", inset: 0, zIndex: 5, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+              <div style={{ background: "rgba(10,10,10,0.92)", border: "1px solid var(--orange)", borderRadius: 16, padding: "20px 40px", textAlign: "center", transform: "rotate(-3deg)", boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>
+                <div style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(22px,4vw,32px)", fontWeight: 900, letterSpacing: 3, textTransform: "uppercase", color: "var(--orange)" }}>Coming Soon</div>
+                <div style={{ fontSize: 14, color: "var(--grey-light)", marginTop: 6 }}>Court booking opens with the app launch.</div>
+              </div>
+            </div>
+
+            {/* Existing booking content, greyed out and non-interactive */}
+            <div aria-hidden="true" style={{ opacity: 0.35, filter: "grayscale(0.7)", pointerEvents: "none", userSelect: "none" }}>
+              {/* Layout: map + court list */}
+              <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 80px", display: "grid", gridTemplateColumns: "1fr 380px", gap: 24 }} className="discover-layout">
+
+                {/* Map placeholder */}
+                <div style={{ background: "var(--dark-surface)", border: "1px solid var(--dark-border)", borderRadius: 16, minHeight: 520, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(232,77,26,0.03), rgba(232,77,26,0.01))" }} />
+
+                  {/* Fake map grid */}
+                  <div style={{ position: "absolute", inset: 0, opacity: 0.04 }}>
+                    {Array.from({ length: 10 }).map((_, i) => (
+                      <div key={i} style={{ position: "absolute", top: 0, bottom: 0, left: `${i * 10}%`, width: 1, background: "var(--white)" }} />
+                    ))}
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <div key={i} style={{ position: "absolute", left: 0, right: 0, top: `${i * 12.5}%`, height: 1, background: "var(--white)" }} />
+                    ))}
+                  </div>
+
+                  {/* Fake pins */}
+                  {[{ top: "35%", left: "45%", label: "REA" }, { top: "52%", left: "38%", label: "TFS" }, { top: "28%", left: "60%", label: "RPK" }, { top: "65%", left: "30%", label: "KFY" }].map((pin) => (
+                    <div key={pin.label} style={{ position: "absolute", top: pin.top, left: pin.left, transform: "translate(-50%,-100%)", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                      <div style={{ background: "var(--orange)", color: "var(--white)", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 6, whiteSpace: "nowrap", boxShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>{pin.label}</div>
+                      <div style={{ width: 2, height: 8, background: "var(--orange)" }} />
+                      <div style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--orange)" }} />
+                    </div>
+                  ))}
+
+                  <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+                    <div style={{ fontSize: 48, marginBottom: 16 }}>🗺️</div>
+                    <h3 style={{ fontFamily: "var(--font-outfit)", fontSize: 20, fontWeight: 700, marginBottom: 8 }}>Interactive Map</h3>
+                    <p style={{ color: "var(--grey)", fontSize: 14, maxWidth: 240 }}>Full map integration launches with the app. Courts will show real-time availability.</p>
+                  </div>
+                </div>
+
+                {/* Court list */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  {filtered.length === 0 && (
+                    <div style={{ textAlign: "center", padding: 40, color: "var(--grey)" }}>No courts match this filter.</div>
+                  )}
+                  {filtered.map((court) => (
+                    <div key={court.name} style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 14, padding: 20, transition: "all 0.3s", cursor: "default" }}
+                      onMouseEnter={(e) => { const el = e.currentTarget; el.style.borderColor = "rgba(232,77,26,0.3)"; el.style.transform = "translateY(-2px)"; }}
+                      onMouseLeave={(e) => { const el = e.currentTarget; el.style.borderColor = "var(--dark-border)"; el.style.transform = "translateY(0)"; }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+                        <h4 style={{ fontFamily: "var(--font-outfit)", fontSize: 16, fontWeight: 700 }}>{court.name}</h4>
+                        <span style={{ fontSize: 12, color: "var(--orange)", fontWeight: 600, whiteSpace: "nowrap", marginLeft: 8 }}>{court.distance}</span>
+                      </div>
+                      <p style={{ fontSize: 13, color: "var(--grey)", marginBottom: 10 }}>{court.address}</p>
+                      <span style={{
+                        display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 100, letterSpacing: 0.5, marginBottom: 12,
+                        background: court.type === "private" ? "rgba(232,77,26,0.1)" : "rgba(46,125,50,0.1)",
+                        color: court.type === "private" ? "var(--orange)" : "var(--green-light)",
+                      }}>
+                        {court.typeLabel}
+                      </span>
+
+                      {court.special ? (
+                        <div style={{ display: "flex", gap: 8 }}>
+                          <span style={{ padding: "6px 12px", background: "var(--dark-surface)", border: "1px solid var(--dark-border)", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "var(--grey-light)" }}>Open</span>
+                          <span style={{ padding: "6px 12px", background: "rgba(232,77,26,0.1)", border: "1px solid var(--orange)", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "var(--orange)" }}>{court.special}</span>
+                        </div>
+                      ) : (
+                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                          {court.slots.map((slot) => {
+                            const isBooked = court.booked.includes(slot);
+                            return (
+                              <span key={slot} style={{
+                                padding: "5px 10px", borderRadius: 8, fontSize: 12, fontWeight: 600,
+                                background: isBooked ? "transparent" : "var(--dark-surface)",
+                                border: `1px solid ${isBooked ? "var(--dark-border)" : "var(--dark-border)"}`,
+                                color: isBooked ? "var(--grey-dark)" : "var(--grey-light)",
+                                textDecoration: isBooked ? "line-through" : "none",
+                                opacity: isBooked ? 0.4 : 1,
+                                cursor: isBooked ? "not-allowed" : "pointer",
+                                transition: "all 0.15s",
+                              }}
+                                onMouseEnter={(e) => { if (!isBooked) { const el = e.currentTarget; el.style.borderColor = "var(--orange)"; el.style.color = "var(--orange)"; } }}
+                                onMouseLeave={(e) => { if (!isBooked) { const el = e.currentTarget; el.style.borderColor = "var(--dark-border)"; el.style.color = "var(--grey-light)"; } }}>
+                                {slot}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  <div style={{ background: "var(--dark-surface)", border: "1px solid var(--dark-border)", borderRadius: 14, padding: 20, textAlign: "center" }}>
+                    <div style={{ fontSize: 24, marginBottom: 8 }}>🏟️</div>
+                    <p style={{ fontSize: 13, color: "var(--grey)", marginBottom: 12 }}>Own a court? List it on Halfcourt and reach hundreds of local players.</p>
+                    <Link href="/#contact" style={{ color: "var(--orange)", fontWeight: 700, fontSize: 13, textDecoration: "none", fontFamily: "var(--font-dm-sans)" }}>Become a venue partner →</Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       <style>{`
         @media (max-width: 968px) {
           .discover-layout { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 768px) {
+          .pinned-grid { grid-template-columns: 1fr !important; }
+          .run-row { grid-template-columns: 56px 1fr !important; }
+          .run-row > span { justify-self: start; }
         }
       `}</style>
     </>
