@@ -69,12 +69,10 @@ const flowStages = [
 
 function Hero() {
   const [active, setActive] = useState(0);
-  const [animKey, setAnimKey] = useState(0);
 
   useEffect(() => {
     const t = setInterval(() => {
       setActive((i) => (i + 1) % flowStages.length);
-      setAnimKey((k) => k + 1);
     }, 2200);
     return () => clearInterval(t);
   }, []);
@@ -192,16 +190,18 @@ function Hero() {
                 <span style={{ fontSize: 9, fontWeight: 600, color: "var(--white)" }}>9:41</span>
                 <span style={{ fontSize: 9, color: "var(--white)" }}>▲▲▲</span>
               </div>
-              {/* App screen (cycles launch → queue → play → win) */}
-              <div key={animKey} className="flow-screen-enter" style={{ position: "absolute", inset: 0, top: 36 }}>
-                <Image
-                  src={flowStages[active].img}
-                  alt={flowStages[active].alt}
-                  fill
-                  style={{ objectFit: "cover", objectPosition: "top" }}
-                  priority
-                />
-              </div>
+              {/* App screen (cycles launch → queue → play → win). Every slide
+                  stays mounted and fetches up front; the active one fades in,
+                  so no image ever loads mid-rotation. */}
+              {flowStages.map((s, i) => (
+                <div key={s.word} aria-hidden={active !== i} style={{ position: "absolute", inset: 0, top: 36, opacity: active === i ? 1 : 0, transition: "opacity 0.45s ease" }}>
+                  {i === 0 ? (
+                    <Image src={s.img} alt={s.alt} fill sizes="300px" style={{ objectFit: "cover", objectPosition: "top" }} preload />
+                  ) : (
+                    <Image src={s.img} alt={s.alt} fill sizes="300px" style={{ objectFit: "cover", objectPosition: "top" }} loading="eager" />
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
