@@ -5,6 +5,7 @@ import Image from "next/image";
 import Nav from "@/components/Nav";
 import GameFlow from "@/components/GameFlow";
 import Footer from "@/components/Footer";
+import SocialLinks from "@/components/SocialIcons";
 
 /* ─── Shared helpers ─── */
 function FadeUp({ children, delay = 0, style = {} }: { children: React.ReactNode; delay?: number; style?: React.CSSProperties }) {
@@ -722,7 +723,7 @@ function Contact() {
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               {[
                 ["📧","Email",<a key="email" href="mailto:Support@playhalfcourt.com" style={{ color: "var(--grey-light)", textDecoration: "underline", textUnderlineOffset: 3 }}>Support@playhalfcourt.com</a>],
-                ["📱","Social",<span key="social"><a href="https://www.instagram.com/playhalfcourt/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--grey-light)", textDecoration: "underline", textUnderlineOffset: 3 }}>Instagram</a> · <a href="https://www.tiktok.com/@playhalfcourt" target="_blank" rel="noopener noreferrer" style={{ color: "var(--grey-light)", textDecoration: "underline", textUnderlineOffset: 3 }}>TikTok</a></span>],
+                ["📱","Social",<SocialLinks key="social" color="var(--grey-light)" />],
                 ["🏟️","Venue Partnerships","Want to list your court? Get in touch."],
               ].map(([icon,h,p]) => (
                 <div key={h as string} style={{ display: "flex", gap: 16 }}>
@@ -760,7 +761,7 @@ function Contact() {
           </FadeUp>
         </div>
       </div>
-      <style>{`@media(max-width:768px){.contact-grid{grid-template-columns:1fr!important}}`}</style>
+      <style>{`.footer-link:hover{color:var(--orange)!important}@media(max-width:768px){.contact-grid{grid-template-columns:1fr!important}}`}</style>
     </section>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SocialLinks from "@/components/SocialIcons";
 
 /* ─── Shared logo mark ─── */
 function Logo() {
@@ -14,14 +15,13 @@ function Logo() {
 export default function Footer() {
   const columns = [
     { h: "Product", links: [["Features", "/features"], ["Leaderboards", "/leaderboards"], ["Discover", "/discover"], ["Plans", "/plans"]] },
-    { h: "Company", links: [["Contact", "/#contact"], ["Venue Partners", "/#contact"], ["Press", "/#contact"]] },
     { h: "Legal", links: [["Privacy Policy", "/privacy"], ["Terms of Service", "/terms"]] },
   ] as const;
 
   return (
     <footer style={{ background: "var(--dark-surface)", borderTop: "1px solid var(--dark-border)", padding: "48px 0 32px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 40, marginBottom: 40 }} className="footer-grid">
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 40, marginBottom: 40 }} className="footer-grid">
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
               <Logo />
@@ -43,8 +43,7 @@ export default function Footer() {
           <p style={{ fontSize: 13, color: "var(--grey-dark)" }}>© 2026 Halfcourt Global Pty Ltd. All rights reserved.</p>
           <div style={{ display: "flex", gap: 20, flexWrap: "wrap", alignItems: "center" }}>
             <a href="mailto:Support@playhalfcourt.com" className="footer-link" style={{ fontSize: 13, color: "var(--grey-dark)", textDecoration: "none" }}>Support@playhalfcourt.com</a>
-            <a href="https://www.instagram.com/playhalfcourt/" target="_blank" rel="noopener noreferrer" className="footer-link" style={{ fontSize: 13, color: "var(--grey-dark)", textDecoration: "none" }}>Instagram</a>
-            <a href="https://www.tiktok.com/@playhalfcourt" target="_blank" rel="noopener noreferrer" className="footer-link" style={{ fontSize: 13, color: "var(--grey-dark)", textDecoration: "none" }}>TikTok</a>
+            <SocialLinks />
           </div>
         </div>
       </div>
