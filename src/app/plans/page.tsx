@@ -4,39 +4,38 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 
 const free = [
-  "Queue for shadow games (casual mode)",
-  "Ranked mode ($1/game), temporarily free",
-  "Book courts 6 hours in advance",
-  "Discover nearby courts and games",
-  "Court chatrooms and guilds",
-  "Basic stats & leaderboard",
+  "Find matches",
+  "Queue for multiple courts",
+  "Get a BPI (Basketball Player Index)",
+  "Schedule games 24 hours in advance",
+  "Book courts 24 hours in advance",
+  "Discover nearby courts, games and events",
+  "Basic stats and leaderboards",
+  "Add friends",
+  "View rank progression",
 ];
 
 const pro = [
-  "No fees on ranked games",
-  "Discount on all arena games and bookings",
-  "Schedule up to 7 days out",
-  "Queue up to 3 courts",
-  "Access to tournament calendar and free entry on select ones",
-  "Advanced player analytics",
-  "Full leaderboards with filters",
-  "Priority queue + verified badge",
+  "Discounts on bookings",
+  "Schedule up to 1 week in advance",
+  "View booking availabilities 1 week in advance",
+  "Access exclusive tournaments + early entry to public ones",
+  "Limited edition trading cards",
 ];
 
 const comparison = [
-  { feature: "Court discovery & booking", free: true, locked: true },
-  { feature: "Matchmaking (Shadow)", free: true, locked: true },
-  { feature: "Ranked matchmaking", free: "$1/game", locked: "Included" },
-  { feature: "Advance scheduling", free: "6h", locked: "7 days" },
-  { feature: "Court queues", free: "1 court", locked: "3 courts" },
-  { feature: "Court chatrooms", free: true, locked: true },
-  { feature: "Guilds & team play", free: true, locked: true },
-  { feature: "Basic stats", free: true, locked: true },
-  { feature: "Advanced analytics", free: false, locked: true },
-  { feature: "Full leaderboards", free: false, locked: true },
-  { feature: "Priority queue", free: false, locked: true },
-  { feature: "Verified badge", free: false, locked: true },
-  { feature: "Tournament calendar + free entry (select)", free: false, locked: true },
+  { feature: "Find matches", free: true, locked: true },
+  { feature: "Queue for multiple courts", free: true, locked: true },
+  { feature: "BPI (Basketball Player Index)", free: true, locked: true },
+  { feature: "Schedule games in advance", free: "24 hours", locked: "1 week" },
+  { feature: "Book courts / view availability", free: "24 hours", locked: "1 week" },
+  { feature: "Discover courts, games & events", free: true, locked: true },
+  { feature: "Basic stats & leaderboards", free: true, locked: true },
+  { feature: "Add friends", free: true, locked: true },
+  { feature: "Rank progression", free: true, locked: true },
+  { feature: "Booking discounts", free: false, locked: true },
+  { feature: "Exclusive tournaments + early public entry", free: false, locked: true },
+  { feature: "Limited edition trading cards", free: false, locked: true },
 ];
 
 export default function PlansPage() {
@@ -105,6 +104,7 @@ export default function PlansPage() {
               </div>
               <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>1 month free trial</div>
               <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>Cancel anytime</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--white)", letterSpacing: 0.3, marginBottom: 12 }}>Everything in Free, plus…</div>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
                 {pro.map(f => (
                   <li key={f} style={{ fontSize: 14, color: "var(--grey-light)", display: "flex", alignItems: "flex-start", gap: 10 }}>
