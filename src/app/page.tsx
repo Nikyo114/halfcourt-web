@@ -713,6 +713,35 @@ function Waitlist() {
 /* ─── Contact ─── */
 function Contact() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({ name: "", email: "", category: "", message: "", website: "" });
+
+  const update = (k: "name" | "email" | "category" | "message" | "website", v: string) =>
+    setForm((f) => ({ ...f, [k]: v }));
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const webhookUrl = process.env.NEXT_PUBLIC_CONTACT_WEBHOOK_URL;
+      if (!webhookUrl) throw new Error("Contact form is not configured yet. Email us at support@playhalfcourt.com.");
+      const res = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, source: "playhalfcourt.com contact form" }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Something went wrong");
+      setSent(true);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Email us at support@playhalfcourt.com.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section id="contact" style={{ padding: "100px 0", background: "var(--dark-surface)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
@@ -738,19 +767,21 @@ function Contact() {
           </FadeUp>
           <FadeUp delay={150}>
             {!sent ? (
-              <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <input type="text" name="website" className="sr-only" value={form.website} onChange={(e) => update("website", e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" />
                 <label htmlFor="contact-name" className="sr-only">Your name</label>
-                <input id="contact-name" type="text" placeholder="Your name" required style={{ padding: "14px 18px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 15, fontFamily: "var(--font-dm-sans)", outline: "none" }} />
+                <input id="contact-name" type="text" placeholder="Your name" required value={form.name} onChange={(e) => update("name", e.target.value)} disabled={loading} style={{ padding: "14px 18px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 15, fontFamily: "var(--font-dm-sans)", outline: "none" }} />
                 <label htmlFor="contact-email" className="sr-only">Your email</label>
-                <input id="contact-email" type="email" placeholder="Your email" required style={{ padding: "14px 18px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 15, fontFamily: "var(--font-dm-sans)", outline: "none" }} />
+                <input id="contact-email" type="email" placeholder="Your email" required value={form.email} onChange={(e) => update("email", e.target.value)} disabled={loading} style={{ padding: "14px 18px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 15, fontFamily: "var(--font-dm-sans)", outline: "none" }} />
                 <label htmlFor="contact-category" className="sr-only">Category</label>
-                <select id="contact-category" defaultValue="" style={{ padding: "14px 18px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--grey)", fontSize: 15, fontFamily: "var(--font-dm-sans)", outline: "none" }}>
+                <select id="contact-category" required value={form.category} onChange={(e) => update("category", e.target.value)} disabled={loading} style={{ padding: "14px 18px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--grey)", fontSize: 15, fontFamily: "var(--font-dm-sans)", outline: "none" }}>
                   <option value="" disabled>What&apos;s this about?</option>
                   {["General enquiry","Venue / court partnership","Sponsorship","Media / press","Bug report","Other"].map(o => <option key={o}>{o}</option>)}
                 </select>
                 <label htmlFor="contact-message" className="sr-only">Your message</label>
-                <textarea id="contact-message" placeholder="Your message" required rows={4} style={{ padding: "14px 18px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 15, fontFamily: "var(--font-dm-sans)", outline: "none", resize: "vertical" }} />
-                <button type="submit" style={{ background: "var(--orange)", color: "var(--white)", padding: "15px", borderRadius: 10, border: "none", fontSize: 15, fontWeight: 700, cursor: "pointer" }}>Send Message</button>
+                <textarea id="contact-message" placeholder="Your message" required rows={4} value={form.message} onChange={(e) => update("message", e.target.value)} disabled={loading} style={{ padding: "14px 18px", background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 10, color: "var(--white)", fontSize: 15, fontFamily: "var(--font-dm-sans)", outline: "none", resize: "vertical" }} />
+                <button type="submit" disabled={loading} style={{ background: "var(--orange)", color: "var(--white)", padding: "15px", borderRadius: 10, border: "none", fontSize: 15, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}>{loading ? "Sending..." : "Send Message"}</button>
+                {error && <p style={{ fontSize: 13, color: "#FF6B6B", margin: 0 }} role="alert">{error}</p>}
               </form>
             ) : (
               <div style={{ textAlign: "center", padding: 40, background: "rgba(46,125,50,0.1)", border: "1px solid rgba(46,125,50,0.3)", borderRadius: 16 }}>
