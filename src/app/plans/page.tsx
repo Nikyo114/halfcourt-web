@@ -105,16 +105,17 @@ export default function PlansPage() {
 
             {/* Locked In Annual */}
             <div style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 20, padding: 36, position: "relative", textAlign: "left", display: "flex", flexDirection: "column" }}>
-              <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "var(--orange)", color: "var(--white)", fontSize: 11, fontWeight: 700, letterSpacing: 1.5, padding: "4px 16px", borderRadius: 100, whiteSpace: "nowrap" }}>SAVE 49%</div>
+              <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "var(--orange)", color: "var(--white)", fontSize: 11, fontWeight: 700, letterSpacing: 1.5, padding: "4px 16px", borderRadius: 100, whiteSpace: "nowrap" }}>LAUNCH DISCOUNT</div>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Locked In Annual</div>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 48, fontWeight: 900, color: "var(--orange)", lineHeight: 1 }}>
-                $48.90
-                <span style={{ fontSize: 16, fontWeight: 500, color: "var(--grey)" }}>/yr</span>
+                <span style={{ fontSize: 20, fontWeight: 600, color: "var(--grey)", textDecoration: "line-through", marginRight: 8 }}>$7.99</span>
+                $4.08
+                <span style={{ fontSize: 16, fontWeight: 500, color: "var(--grey)" }}>/mo</span>
               </div>
-              <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>Launch discount</div>
+              <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>One $48.90 payment, billed yearly</div>
               <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>1 month free trial · Cancel anytime</div>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
-                {["Everything in Locked In", "Save $46.98 vs paying monthly"].map(f => (
+                {["Everything in Locked In", "Save 49% vs paying monthly"].map(f => (
                   <li key={f} style={{ fontSize: 14, color: "var(--grey-light)", display: "flex", alignItems: "flex-start", gap: 10 }}>
                     <span style={{ color: "var(--green-light)", fontWeight: 700, flexShrink: 0 }}>✓</span>{f}
                   </li>
