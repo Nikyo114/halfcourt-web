@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 
@@ -20,7 +19,7 @@ const pro = [
   "Book courts 1 week in advance",
   "Access exclusive tournaments",
   "Limited edition trading cards",
-  "Monthly subscriber only challenges (coming soon)",
+  "Monthly subscriber only challenges and prizes (coming soon)",
 ];
 
 const comparison = [
@@ -36,12 +35,10 @@ const comparison = [
   { feature: "Basic stats & leaderboards", free: true, locked: true },
   { feature: "Discount on bookings", free: false, locked: true },
   { feature: "Limited edition trading cards", free: false, locked: true },
-  { feature: "Monthly subscriber only challenges (coming soon)", free: false, locked: true },
+  { feature: "Monthly subscriber only challenges and prizes (coming soon)", free: false, locked: true },
 ];
 
 export default function PlansPage() {
-  const [annual, setAnnual] = useState(false);
-
   const renderVal = (val: boolean | string) => {
     if (val === true) return <span style={{ color: "var(--green-light)", fontWeight: 700 }}>✓</span>;
     if (val === false) return <span style={{ color: "var(--grey-dark)" }}>·</span>;
@@ -56,28 +53,16 @@ export default function PlansPage() {
         <div style={{ background: "var(--dark-surface)", borderBottom: "1px solid var(--dark-border)", padding: "48px 0 48px", textAlign: "center" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: "var(--orange)", marginBottom: 12, fontFamily: "var(--font-outfit)" }}>Plans</div>
-            <h1 style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(32px,5vw,56px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 12 }}>Play Free or Lock in.</h1>
-            <p style={{ fontSize: 18, color: "var(--white)", fontWeight: 700, marginBottom: 32 }}>Every new player gets a 1-month free trial.</p>
-
-            {/* Toggle */}
-            <div style={{ display: "flex", justifyContent: "center", gap: 4, background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 12, padding: 4, width: "fit-content", margin: "0 auto" }}>
-              {["Monthly", "Annual (save 42%)"].map((t, i) => (
-                <button key={t} onClick={() => setAnnual(i === 1)} style={{
-                  padding: "10px 28px", borderRadius: 10, fontSize: 14, fontWeight: 600, border: "none", cursor: "pointer",
-                  fontFamily: "var(--font-dm-sans)", transition: "all 0.2s",
-                  background: annual === (i === 1) ? "var(--orange)" : "transparent",
-                  color: annual === (i === 1) ? "var(--white)" : "var(--grey)",
-                }}>{t}</button>
-              ))}
-            </div>
+            <h1 style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(32px,5vw,56px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 12 }}>Play Free or Lock In.</h1>
+            <p style={{ fontSize: 18, color: "var(--white)", fontWeight: 700 }}>Every new player gets a 1-month free trial of Locked In. Priced affordably so anyone can get it.</p>
           </div>
         </div>
 
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px 80px" }}>
           {/* Plan cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 800, margin: "0 auto 64px" }} className="plans-grid">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, maxWidth: 1160, margin: "0 auto 64px" }} className="plans-grid">
             {/* Free */}
-            <div style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 20, padding: 36, textAlign: "left" }}>
+            <div style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 20, padding: 36, textAlign: "left", display: "flex", flexDirection: "column" }}>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Free</div>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 48, fontWeight: 900, color: "var(--orange)", lineHeight: 1 }}>$0</div>
               <div style={{ fontSize: 13, color: "var(--grey)", marginTop: 4, marginBottom: 24 }}>Forever free</div>
@@ -88,7 +73,7 @@ export default function PlansPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/#waitlist" style={{ display: "block", textAlign: "center", padding: "14px", borderRadius: 10, background: "transparent", border: "1px solid var(--dark-border)", color: "var(--white)", fontSize: 15, fontWeight: 600, textDecoration: "none", fontFamily: "var(--font-dm-sans)", transition: "all 0.2s" }}
+              <Link href="/#waitlist" style={{ marginTop: "auto", display: "block", textAlign: "center", padding: "14px", borderRadius: 10, background: "transparent", border: "1px solid var(--dark-border)", color: "var(--white)", fontSize: 15, fontWeight: 600, textDecoration: "none", fontFamily: "var(--font-dm-sans)", transition: "all 0.2s" }}
                 onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--orange)")}
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--dark-border)")}>
                 Join Free
@@ -96,12 +81,12 @@ export default function PlansPage() {
             </div>
 
             {/* Locked In */}
-            <div style={{ background: "var(--dark-card)", border: "1px solid var(--orange)", borderRadius: 20, padding: 36, position: "relative", textAlign: "left", boxShadow: "0 0 40px rgba(232,77,26,0.15)" }}>
+            <div style={{ background: "var(--dark-card)", border: "1px solid var(--orange)", borderRadius: 20, padding: 36, position: "relative", textAlign: "left", boxShadow: "0 0 40px rgba(232,77,26,0.15)", display: "flex", flexDirection: "column" }}>
               <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "var(--orange)", color: "var(--white)", fontSize: 11, fontWeight: 700, letterSpacing: 1.5, padding: "4px 16px", borderRadius: 100, whiteSpace: "nowrap" }}>MOST POPULAR</div>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Locked In</div>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 48, fontWeight: 900, color: "var(--orange)", lineHeight: 1 }}>
-                {annual ? "$48.90" : "$6.99"}
-                <span style={{ fontSize: 16, fontWeight: 500, color: "var(--grey)" }}>{annual ? "/yr" : "/mo"}</span>
+                $7.99
+                <span style={{ fontSize: 16, fontWeight: 500, color: "var(--grey)" }}>/mo</span>
               </div>
               <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>1 month free trial</div>
               <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>Cancel anytime</div>
@@ -113,7 +98,29 @@ export default function PlansPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/#waitlist" style={{ display: "block", textAlign: "center", padding: "14px", borderRadius: 10, background: "var(--orange)", border: "none", color: "var(--white)", fontSize: 15, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-dm-sans)" }}>
+              <Link href="/#waitlist" style={{ marginTop: "auto", display: "block", textAlign: "center", padding: "14px", borderRadius: 10, background: "var(--orange)", border: "none", color: "var(--white)", fontSize: 15, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-dm-sans)" }}>
+                Start Free Trial
+              </Link>
+            </div>
+
+            {/* Locked In Annual */}
+            <div style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 20, padding: 36, position: "relative", textAlign: "left", display: "flex", flexDirection: "column" }}>
+              <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "var(--orange)", color: "var(--white)", fontSize: 11, fontWeight: 700, letterSpacing: 1.5, padding: "4px 16px", borderRadius: 100, whiteSpace: "nowrap" }}>SAVE 49%</div>
+              <div style={{ fontFamily: "var(--font-outfit)", fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Locked In Annual</div>
+              <div style={{ fontFamily: "var(--font-outfit)", fontSize: 48, fontWeight: 900, color: "var(--orange)", lineHeight: 1 }}>
+                $48.90
+                <span style={{ fontSize: 16, fontWeight: 500, color: "var(--grey)" }}>/yr</span>
+              </div>
+              <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>Launch discount</div>
+              <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>1 month free trial · Cancel anytime</div>
+              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
+                {["Everything in Locked In", "Save $46.98 vs paying monthly"].map(f => (
+                  <li key={f} style={{ fontSize: 14, color: "var(--grey-light)", display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <span style={{ color: "var(--green-light)", fontWeight: 700, flexShrink: 0 }}>✓</span>{f}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/#waitlist" style={{ marginTop: "auto", display: "block", textAlign: "center", padding: "14px", borderRadius: 10, background: "var(--orange)", border: "none", color: "var(--white)", fontSize: 15, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-dm-sans)" }}>
                 Start Free Trial
               </Link>
             </div>
@@ -150,8 +157,8 @@ export default function PlansPage() {
       </main>
 
       <style>{`
-        @media (max-width: 768px) {
-          .plans-grid { grid-template-columns: 1fr !important; }
+        @media (max-width: 1024px) {
+          .plans-grid { grid-template-columns: 1fr !important; max-width: 520px !important; }
         }
       `}</style>
     </>

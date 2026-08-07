@@ -177,7 +177,7 @@ const softwareAppSchema = {
     },
     {
       "@type": "Offer",
-      price: "6.99",
+      price: "7.99",
       priceCurrency: "AUD",
       name: "Locked In",
       billingIncrement: "P1M",
