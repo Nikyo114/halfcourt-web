@@ -4,38 +4,39 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 
 const free = [
-  "Find matches",
-  "Queue for multiple courts",
+  "Queue for games",
   "Get a BPI (Basketball Player Index)",
-  "Schedule games 24 hours in advance",
-  "Book courts 24 hours in advance",
-  "Discover nearby courts, games and events",
+  "Discover nearby courts, games, and events",
+  "Enter tournaments",
+  "Book courts 1 day in advance",
   "Basic stats and leaderboards",
-  "Add friends",
-  "View rank progression",
 ];
 
 const pro = [
-  "Discounts on bookings",
-  "Schedule up to 1 week in advance",
-  "View booking availabilities 1 week in advance",
-  "Access exclusive tournaments + early entry to public ones",
+  "Priority Queue",
+  "Queue for multiple courts",
+  "Schedule games up to 1 week in advance",
+  "Discount on bookings",
+  "Book courts 1 week in advance",
+  "Access exclusive tournaments",
   "Limited edition trading cards",
+  "Monthly subscriber only challenges (coming soon)",
 ];
 
 const comparison = [
-  { feature: "Find matches", free: true, locked: true },
-  { feature: "Queue for multiple courts", free: true, locked: true },
+  { feature: "Queue for games", free: true, locked: true },
+  { feature: "Priority Queue", free: false, locked: true },
+  { feature: "Queue for multiple courts", free: false, locked: true },
   { feature: "BPI (Basketball Player Index)", free: true, locked: true },
-  { feature: "Schedule games in advance", free: "24 hours", locked: "1 week" },
-  { feature: "Book courts / view availability", free: "24 hours", locked: "1 week" },
   { feature: "Discover courts, games & events", free: true, locked: true },
+  { feature: "Enter tournaments", free: true, locked: true },
+  { feature: "Access exclusive tournaments", free: false, locked: true },
+  { feature: "Schedule games in advance", free: false, locked: "1 week" },
+  { feature: "Book courts in advance", free: "1 day", locked: "1 week" },
   { feature: "Basic stats & leaderboards", free: true, locked: true },
-  { feature: "Add friends", free: true, locked: true },
-  { feature: "Rank progression", free: true, locked: true },
-  { feature: "Booking discounts", free: false, locked: true },
-  { feature: "Exclusive tournaments + early public entry", free: false, locked: true },
+  { feature: "Discount on bookings", free: false, locked: true },
   { feature: "Limited edition trading cards", free: false, locked: true },
+  { feature: "Monthly subscriber only challenges (coming soon)", free: false, locked: true },
 ];
 
 export default function PlansPage() {
@@ -104,7 +105,7 @@ export default function PlansPage() {
               </div>
               <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>1 month free trial</div>
               <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>Cancel anytime</div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--white)", letterSpacing: 0.3, marginBottom: 12 }}>Everything in Free, plus…</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--white)", letterSpacing: 0.3, marginBottom: 12 }}>Level up your matchmaking experience:</div>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
                 {pro.map(f => (
                   <li key={f} style={{ fontSize: 14, color: "var(--grey-light)", display: "flex", alignItems: "flex-start", gap: 10 }}>
