@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 
@@ -39,6 +40,8 @@ const comparison = [
 ];
 
 export default function PlansPage() {
+  const [annual, setAnnual] = useState(false);
+
   const renderVal = (val: boolean | string) => {
     if (val === true) return <span style={{ color: "var(--green-light)", fontWeight: 700 }}>✓</span>;
     if (val === false) return <span style={{ color: "var(--grey-dark)" }}>·</span>;
@@ -54,18 +57,32 @@ export default function PlansPage() {
           <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: "var(--orange)", marginBottom: 12, fontFamily: "var(--font-outfit)" }}>Plans</div>
             <h1 style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(32px,5vw,56px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 12 }}>Play Free or Lock In.</h1>
-            <p style={{ fontSize: 18, color: "var(--white)", fontWeight: 700 }}>Every new player gets a 1-month free trial of Locked In. Priced affordably so anyone can get it.</p>
+            <p style={{ fontSize: 18, color: "var(--white)", fontWeight: 700, marginBottom: 32 }}>Every new player gets a 1-month free trial of Locked In. Priced affordably so anyone can get it.</p>
+
+            {/* Toggle */}
+            <div style={{ display: "flex", justifyContent: "center", gap: 4, background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 12, padding: 4, width: "fit-content", margin: "0 auto" }}>
+              {["Monthly", "Annually (Save 49%!)"].map((t, i) => (
+                <button key={t} onClick={() => setAnnual(i === 1)} style={{
+                  padding: "10px 28px", borderRadius: 10, fontSize: 14, fontWeight: 600, border: "none", cursor: "pointer",
+                  fontFamily: "var(--font-dm-sans)", transition: "all 0.2s",
+                  background: annual === (i === 1) ? "var(--orange)" : "transparent",
+                  color: annual === (i === 1) ? "var(--white)" : "var(--grey)",
+                }}>{t}</button>
+              ))}
+            </div>
           </div>
         </div>
 
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px 80px" }}>
           {/* Plan cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, maxWidth: 1160, margin: "0 auto 64px" }} className="plans-grid">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 800, margin: "0 auto 64px" }} className="plans-grid">
             {/* Free */}
             <div style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 20, padding: 36, textAlign: "left", display: "flex", flexDirection: "column" }}>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Free</div>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 48, fontWeight: 900, color: "var(--orange)", lineHeight: 1 }}>$0</div>
-              <div style={{ fontSize: 13, color: "var(--grey)", marginTop: 4, marginBottom: 24 }}>Forever free</div>
+              <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>Forever free</div>
+              <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>No credit card required</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--white)", letterSpacing: 0.3, marginBottom: 12 }}>Everything you need to play:</div>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
                 {free.map(f => (
                   <li key={f} style={{ fontSize: 14, color: "var(--grey-light)", display: "flex", alignItems: "flex-start", gap: 10 }}>
@@ -82,14 +99,15 @@ export default function PlansPage() {
 
             {/* Locked In */}
             <div style={{ background: "var(--dark-card)", border: "1px solid var(--orange)", borderRadius: 20, padding: 36, position: "relative", textAlign: "left", boxShadow: "0 0 40px rgba(232,77,26,0.15)", display: "flex", flexDirection: "column" }}>
-              <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "var(--orange)", color: "var(--white)", fontSize: 11, fontWeight: 700, letterSpacing: 1.5, padding: "4px 16px", borderRadius: 100, whiteSpace: "nowrap" }}>MOST POPULAR</div>
+              <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "var(--orange)", color: "var(--white)", fontSize: 11, fontWeight: 700, letterSpacing: 1.5, padding: "4px 16px", borderRadius: 100, whiteSpace: "nowrap" }}>{annual ? "LAUNCH DISCOUNT" : "MOST POPULAR"}</div>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Locked In</div>
               <div style={{ fontFamily: "var(--font-outfit)", fontSize: 48, fontWeight: 900, color: "var(--orange)", lineHeight: 1 }}>
-                $7.99
+                {annual && <span style={{ fontSize: 20, fontWeight: 600, color: "var(--grey)", textDecoration: "line-through", marginRight: 8 }}>$7.99</span>}
+                {annual ? "$4.08" : "$7.99"}
                 <span style={{ fontSize: 16, fontWeight: 500, color: "var(--grey)" }}>/mo</span>
               </div>
-              <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>1 month free trial</div>
-              <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>Cancel anytime</div>
+              <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>{annual ? "One $48.90 payment, billed yearly" : "1 month free trial"}</div>
+              <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>{annual ? "1 month free trial · Cancel anytime" : "Cancel anytime"}</div>
               <div style={{ fontSize: 13, fontWeight: 700, color: "var(--white)", letterSpacing: 0.3, marginBottom: 12 }}>Level up your matchmaking experience:</div>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
                 {pro.map(f => (
@@ -103,28 +121,6 @@ export default function PlansPage() {
               </Link>
             </div>
 
-            {/* Locked In Annual */}
-            <div style={{ background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 20, padding: 36, position: "relative", textAlign: "left", display: "flex", flexDirection: "column" }}>
-              <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "var(--orange)", color: "var(--white)", fontSize: 11, fontWeight: 700, letterSpacing: 1.5, padding: "4px 16px", borderRadius: 100, whiteSpace: "nowrap" }}>LAUNCH DISCOUNT</div>
-              <div style={{ fontFamily: "var(--font-outfit)", fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Locked In Annual</div>
-              <div style={{ fontFamily: "var(--font-outfit)", fontSize: 48, fontWeight: 900, color: "var(--orange)", lineHeight: 1 }}>
-                <span style={{ fontSize: 20, fontWeight: 600, color: "var(--grey)", textDecoration: "line-through", marginRight: 8 }}>$7.99</span>
-                $4.08
-                <span style={{ fontSize: 16, fontWeight: 500, color: "var(--grey)" }}>/mo</span>
-              </div>
-              <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>One $48.90 payment, billed yearly</div>
-              <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>1 month free trial · Cancel anytime</div>
-              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
-                {["Everything in Locked In", "Save 49% vs paying monthly"].map(f => (
-                  <li key={f} style={{ fontSize: 14, color: "var(--grey-light)", display: "flex", alignItems: "flex-start", gap: 10 }}>
-                    <span style={{ color: "var(--green-light)", fontWeight: 700, flexShrink: 0 }}>✓</span>{f}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/#waitlist" style={{ marginTop: "auto", display: "block", textAlign: "center", padding: "14px", borderRadius: 10, background: "var(--orange)", border: "none", color: "var(--white)", fontSize: 15, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-dm-sans)" }}>
-                Start Free Trial
-              </Link>
-            </div>
           </div>
 
           {/* Comparison table */}
@@ -158,7 +154,7 @@ export default function PlansPage() {
       </main>
 
       <style>{`
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
           .plans-grid { grid-template-columns: 1fr !important; max-width: 520px !important; }
         }
       `}</style>
