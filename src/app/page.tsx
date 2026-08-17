@@ -6,6 +6,26 @@ import Nav from "@/components/Nav";
 import GameFlow from "@/components/GameFlow";
 import Footer from "@/components/Footer";
 import SocialLinks from "@/components/SocialIcons";
+import { FIRST_TOUCH_KEY } from "@/components/FirstTouch";
+
+// First-touch attribution captured by <FirstTouch /> — "direct" when the
+// visitor never arrived with UTM params (e.g. typed the URL).
+function getAttribution() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(FIRST_TOUCH_KEY) || "null");
+    if (stored && typeof stored === "object" && stored.source) {
+      return {
+        source: String(stored.source),
+        medium: String(stored.medium || ""),
+        campaign: String(stored.campaign || ""),
+        content: String(stored.content || ""),
+        first_touch_at: String(stored.ts || ""),
+        landing_path: String(stored.path || ""),
+      };
+    }
+  } catch {}
+  return { source: "direct", medium: "", campaign: "", content: "", first_touch_at: "", landing_path: "" };
+}
 
 /* ─── Shared helpers ─── */
 function FadeUp({ children, delay = 0, style = {} }: { children: React.ReactNode; delay?: number; style?: React.CSSProperties }) {
@@ -662,7 +682,7 @@ function Waitlist() {
       const res = await fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, ...getAttribution() }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "Something went wrong");

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, DM_Sans } from "next/font/google";
+import FirstTouch from "@/components/FirstTouch";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -214,6 +215,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full antialiased">
+        <FirstTouch />
         <a href="#game-flow" className="skip-to-content">Skip to content</a>
         {children}
       </body>
