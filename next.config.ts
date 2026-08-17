@@ -23,6 +23,9 @@ const nextConfig: NextConfig = {
         destination: `${CARD_UTM}&utm_content=${variant}#waitlist`,
         statusCode: 302,
       })),
+      // Ninth card — utm_content is a placeholder until the card is named;
+      // safe to relabel after printing since only /c9 is in the QR code.
+      { source: "/c9", destination: `${CARD_UTM}&utm_content=c9#waitlist`, statusCode: 302 },
     ];
   },
 };
