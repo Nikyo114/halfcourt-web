@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
-// QR-code shortlinks printed on NBL Blitz trading cards — paths must stay this
-// short (they're baked into printed QR codes). 302 so destinations can change
-// without fighting browser cache.
+// QR-code shortlinks for the NBL Blitz — trading cards (/c*) and digital
+// signage (/s*). Paths must stay this short (they're baked into QR codes).
+// 302 so destinations can change without fighting browser cache.
 const CARD_UTM = "/?utm_source=card&utm_medium=print&utm_campaign=blitz26";
 const CARD_VARIANTS = [
   "bronze",
@@ -12,6 +12,17 @@ const CARD_VARIANTS = [
   "diamond",
   "prestige",
   "mythic",
+  "rankers",
+];
+
+// Four LED poster messages — separate source/medium so signage scans split
+// cleanly from print cards in the waitlist sheet.
+const SIGNAGE_UTM = "/?utm_source=signage&utm_medium=ooh&utm_campaign=blitz26";
+const SIGNAGE_MESSAGES = [
+  "watch-today",
+  "anyone-can-hoop",
+  "halfcourt-hoops",
+  "bpi",
 ];
 
 const nextConfig: NextConfig = {
@@ -23,9 +34,11 @@ const nextConfig: NextConfig = {
         destination: `${CARD_UTM}&utm_content=${variant}#waitlist`,
         statusCode: 302,
       })),
-      // Eighth card — utm_content is a placeholder until the card is named;
-      // safe to relabel after printing since only /c8 is in the QR code.
-      { source: "/c8", destination: `${CARD_UTM}&utm_content=c8#waitlist`, statusCode: 302 },
+      ...SIGNAGE_MESSAGES.map((message, i) => ({
+        source: `/s${i + 1}`,
+        destination: `${SIGNAGE_UTM}&utm_content=${message}#waitlist`,
+        statusCode: 302,
+      })),
     ];
   },
 };
