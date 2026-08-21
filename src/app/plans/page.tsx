@@ -4,10 +4,9 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 
 const free = [
-  "Queue for games",
-  "Queue for 1 BPI game per week (subsequently $1 per game)",
   "Get a BPI (Basketball Player Index)",
   "Discover nearby courts, games, and events",
+  "Queue for games (1 BPI game a week, subsequently $1 / game)",
   "Challenge friends",
   "Enter tournaments",
   "Book courts 1 day in advance",
@@ -79,7 +78,7 @@ export default function PlansPage() {
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px 80px" }}>
           {/* Matchmaking promo banner */}
           <div style={{ maxWidth: 800, margin: "0 auto 28px", background: "linear-gradient(135deg, var(--orange), var(--orange-light))", borderRadius: 16, padding: "20px 28px", textAlign: "center", boxShadow: "0 0 50px rgba(232,77,26,0.35)" }}>
-            <div style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(19px,2.8vw,26px)", fontWeight: 900, color: "var(--white)", lineHeight: 1.3 }}>
+            <div style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(13px,1.9vw,18px)", fontWeight: 900, color: "var(--white)", lineHeight: 1.3 }}>
               Matchmaking is currently <s style={{ opacity: 0.7 }}>$1</s> → $0. Play for free while you can!
             </div>
           </div>
