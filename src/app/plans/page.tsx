@@ -5,18 +5,20 @@ import Nav from "@/components/Nav";
 
 const free = [
   "Queue for games",
+  "Queue for 1 BPI game per week (subsequently $1 per game)",
   "Get a BPI (Basketball Player Index)",
   "Discover nearby courts, games, and events",
+  "Challenge friends",
   "Enter tournaments",
   "Book courts 1 day in advance",
   "Basic stats and leaderboards",
 ];
 
 const pro = [
+  "Unlimited BPI games",
   "Priority Queue",
   "Queue for multiple courts",
   "Schedule games up to 1 week in advance",
-  "Discount on bookings",
   "Book courts 1 week in advance",
   "Access exclusive tournaments",
   "Limited edition trading cards",
@@ -25,16 +27,17 @@ const pro = [
 
 const comparison = [
   { feature: "Queue for games", free: true, locked: true },
+  { feature: "BPI games", free: "1/week, then $1/game", locked: "Unlimited" },
   { feature: "Priority Queue", free: false, locked: true },
   { feature: "Queue for multiple courts", free: false, locked: true },
   { feature: "BPI (Basketball Player Index)", free: true, locked: true },
   { feature: "Discover courts, games & events", free: true, locked: true },
+  { feature: "Challenge friends", free: true, locked: true },
   { feature: "Enter tournaments", free: true, locked: true },
   { feature: "Access exclusive tournaments", free: false, locked: true },
   { feature: "Schedule games in advance", free: false, locked: "1 week" },
   { feature: "Book courts in advance", free: "1 day", locked: "1 week" },
   { feature: "Basic stats & leaderboards", free: true, locked: true },
-  { feature: "Discount on bookings", free: false, locked: true },
   { feature: "Limited edition trading cards", free: false, locked: true },
   { feature: "Monthly subscriber only challenges and prizes (coming soon)", free: false, locked: true },
 ];
@@ -57,7 +60,7 @@ export default function PlansPage() {
           <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: "var(--orange)", marginBottom: 12, fontFamily: "var(--font-outfit)" }}>Plans</div>
             <h1 style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(32px,5vw,56px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 12 }}>Play Free or Lock In.</h1>
-            <p style={{ fontSize: 18, color: "var(--white)", fontWeight: 700, marginBottom: 32 }}>Every new player gets a 1-month free trial of Locked In. Priced affordably so anyone can get it.</p>
+            <p style={{ fontSize: 18, color: "var(--white)", fontWeight: 700, marginBottom: 32 }}>Every new player gets a 3-month free trial of Locked In. Priced affordably so anyone can get it.</p>
 
             {/* Toggle */}
             <div style={{ display: "flex", justifyContent: "center", gap: 4, background: "var(--dark-card)", border: "1px solid var(--dark-border)", borderRadius: 12, padding: 4, width: "fit-content", margin: "0 auto" }}>
@@ -74,6 +77,13 @@ export default function PlansPage() {
         </div>
 
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px 80px" }}>
+          {/* Matchmaking promo banner */}
+          <div style={{ maxWidth: 800, margin: "0 auto 28px", background: "linear-gradient(135deg, var(--orange), var(--orange-light))", borderRadius: 16, padding: "20px 28px", textAlign: "center", boxShadow: "0 0 50px rgba(232,77,26,0.35)" }}>
+            <div style={{ fontFamily: "var(--font-outfit)", fontSize: "clamp(19px,2.8vw,26px)", fontWeight: 900, color: "var(--white)", lineHeight: 1.3 }}>
+              Matchmaking is currently <s style={{ opacity: 0.7 }}>$1</s> → $0. Play for free while you can!
+            </div>
+          </div>
+
           {/* Plan cards */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 800, margin: "0 auto 64px" }} className="plans-grid">
             {/* Free */}
@@ -106,8 +116,8 @@ export default function PlansPage() {
                 {annual ? "$4.08" : "$7.99"}
                 <span style={{ fontSize: 16, fontWeight: 500, color: "var(--grey)" }}>/mo</span>
               </div>
-              <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>{annual ? "One $48.90 payment, billed yearly" : "1 month free trial"}</div>
-              <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>{annual ? "1 month free trial · Cancel anytime" : "Cancel anytime"}</div>
+              <div style={{ fontSize: 14, color: "var(--white)", fontWeight: 800, marginTop: 6, letterSpacing: 0.3 }}>{annual ? "One $48.90 payment, billed yearly" : "3 months free trial"}</div>
+              <div style={{ fontSize: 12, color: "var(--grey)", marginTop: 2, marginBottom: 24 }}>{annual ? "3 months free trial · Cancel anytime" : "Cancel anytime"}</div>
               <div style={{ fontSize: 13, fontWeight: 700, color: "var(--white)", letterSpacing: 0.3, marginBottom: 12 }}>Level up your matchmaking experience:</div>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
                 {pro.map(f => (
